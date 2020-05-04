@@ -14,14 +14,13 @@ def modelsim_read(proc):
 		dat = proc.stdout.read(1)
 		if not dat:
 			break
-		if (dat.find(">") != -1):
+		if (dat == ">"):
 			break
 		dat_out=dat_out+dat
-	dat_out = dat_out.strip().split("\n")
-	return dat_out
+	return dat_out.strip().split("\n")
 
 
-class VlibDriver:
+class VlibDriver():
 	def __init__(self,config):
 		#self.config = config
 		self.proc_vlib = subprocess.run(config.modelsim_path+"vlib work",
@@ -29,7 +28,7 @@ class VlibDriver:
 			stdout=subprocess.DEVNULL, 
 			stderr=subprocess.DEVNULL)
 
-class VmapDriver:
+class VmapDriver():
 	def __init__(self,config):
 		#self.config = config
 		self.proc_vlib = subprocess.run(config.modelsim_path+"vmap work work",
@@ -37,7 +36,7 @@ class VmapDriver:
 			stdout=subprocess.DEVNULL, 
 			stderr=subprocess.DEVNULL)
 
-class VlogDriver:
+class VlogDriver():
 	def __init__(self,config):
 		#self.config = config
 		self.proc_vlib = subprocess.run(config.modelsim_path+"vlog *.v",
@@ -46,8 +45,8 @@ class VlogDriver:
 			stderr=subprocess.DEVNULL)
 		#print(self.proc_vlib.stdout)
 
-class VsimDriver:
-	def __init__(self, fpga,config):
+class VsimDriver():
+	def __init__(self):
 		self.config = config
 		self.fpga = fpga
 		self.proc_vsim = subprocess.Popen([self.config.modelsim_path+"vsim", "-c", "-wlfslim", "1", "work."+"MyProject"],
@@ -109,3 +108,10 @@ class VsimDriver:
 		for (name, port) in self.fpga.__dict__.items(): 
 			if port.direction == "output":
 				self.examine(name)
+
+	class Simulator():
+		def __init__(self, fpga,config):
+			self.vlib = VlibDriver(config)
+			#self.vmap = VmapDriver
+			#self.vlog = VlogDriver
+			#self.vsim = VsimDriver

@@ -6,10 +6,11 @@ class Port():
 		self.name = name
 
 	def value_str(self):
-		return ''.join((list(map(str,map(int,self.value)))))
+		return ''.join(map(lambda x: str(int(x)), self.value))
 
 	def value_set(self,data):
-		self.value = [True if  i=="1" else False for i in list(data.split()[1])[::-1]]
+		self.value = [True if  i=="1" else False for i in data[::-1]]
+
 
 class Board():
 	def __init__(self):
@@ -23,10 +24,3 @@ class Board():
 		self.HEX4 = Port(True,7,"output","HEX4")
 		self.HEX5 = Port(True,7,"output","HEX5")
 		self.CLOCK_50 = Port(False,1,"input","CLOCK_50")
-		
-
-	#def print_all(self):
-	#	for (name,port) in self.__dict__.items():
-	#		print(port.value)
-	#		print(port.direction)
-	#		print(port.size)
