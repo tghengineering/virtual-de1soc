@@ -24,3 +24,6 @@ class Board():
 		self.HEX4 = Port(True,7,"output","HEX4")
 		self.HEX5 = Port(True,7,"output","HEX5")
 		self.CLOCK_50 = Port(False,1,"input","CLOCK_50")
+
+	def get(self.port_name):
+		return self.__dict__[port_name]

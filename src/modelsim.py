@@ -76,7 +76,7 @@ class VsimDriver():
 		self.proc_vsim.stdin.flush()
 		data = modelsim_read(self.proc_vsim)
 		if not any("Error" in dat for dat in data):
-			self.fpga.__dict__[port_name].value_set(data[1])
+			self.fpga.get(port_name).value_set(data[1])
 		return data
 	
 	def step(self):
