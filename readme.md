@@ -32,4 +32,4 @@ python -V
 ```
 
 
-[Virtual DE1 SoC](/images/screen.png)
+![Virtual DE1 SoC](/images/screen.png)
