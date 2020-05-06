@@ -23,8 +23,7 @@ class VlibDriver():
 	def __init__(self,modelsim_path, target_path = "", lib_name = "work"):
 		self.process = subprocess.Popen([modelsim_path+"vlib "," -target ",target_path+lib_name],
 			universal_newlines=True,
-			stdout=subprocess.PIPE, 
-			stderr=subprocess.DEVNULL)
+			stdout=subprocess.PIPE)
 
 class VmapDriver():
 	def __init__(self, modelsim_path, target_path = "", lib_name = "work"):
