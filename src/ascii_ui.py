@@ -1,7 +1,7 @@
 import os
 import fpga
 
-def text_de1(board):
+def render(board):
 	shade1 = "░" 
 	shade2 = "░░" 
 	shade4 = "░░░░"
@@ -65,6 +65,7 @@ def text_de1(board):
 	else: 
 		os.system('clear') 
 	
+	print()
 	for i in text_de1:
 		print(i)
 

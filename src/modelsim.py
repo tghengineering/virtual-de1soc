@@ -2,6 +2,7 @@ import subprocess
 import fpga
 import config
 
+
 def modelsim_write(proc,command):
 	proc.stdin.write(command)	
 	proc.stdin.flush()
@@ -12,106 +13,118 @@ def modelsim_read(proc):
 	dat_out = ""
 	while (True):
 		dat = proc.stdout.read(1)
-		if not dat:
-			break
-		if (dat == ">"):
+		if (not dat) or (dat == ">"):
 			break
 		dat_out=dat_out+dat
-	return dat_out.strip().split("\n")
+	return dat_out
 
 
 class VlibDriver():
-	def __init__(self,config):
-		#self.config = config
-		self.proc_vlib = subprocess.run(config.modelsim_path+"vlib work",
-			stdin=subprocess.DEVNULL, 
-			stdout=subprocess.DEVNULL, 
-			stderr=subprocess.DEVNULL)
-
-class VmapDriver():
-	def __init__(self,config):
-		#self.config = config
-		self.proc_vlib = subprocess.run(config.modelsim_path+"vmap work work",
-			stdin=subprocess.DEVNULL, 
-			stdout=subprocess.DEVNULL, 
-			stderr=subprocess.DEVNULL)
-
-class VlogDriver():
-	def __init__(self,config):
-		#self.config = config
-		self.proc_vlib = subprocess.run(config.modelsim_path+"vlog *.v",
+	def __init__(self,modelsim_path, target_path = "", lib_name = "work"):
+		self.process = subprocess.run(modelsim_path+"vlib "+" -target "+target_path+lib_name,
+			universal_newlines=True,
 			stdin=subprocess.DEVNULL, 
 			stdout=subprocess.PIPE, 
 			stderr=subprocess.DEVNULL)
-		#print(self.proc_vlib.stdout)
+
+class VmapDriver():
+	def __init__(self, modelsim_path, target_path = "", lib_name = "work"):
+		self.process = subprocess.run(modelsim_path+"vmap work "+target_path+lib_name,
+			universal_newlines=True,
+			stdin=subprocess.DEVNULL, 
+			stdout=subprocess.PIPE, 
+			stderr=subprocess.DEVNULL)
+
+class VlogDriver():
+	def __init__(self, modelsim_path, target_path = "" ,verilog_files = "**.v", lib_name = "work"):
+		self.process = subprocess.run(modelsim_path+"vlog "+"-work "+target_path+lib_name+" "+verilog_files,
+			universal_newlines=True,
+			stdin=subprocess.DEVNULL, 
+			stdout=subprocess.PIPE, 
+			stderr=subprocess.DEVNULL)
 
 class VsimDriver():
-	def __init__(self):
-		self.config = config
-		self.fpga = fpga
-		self.proc_vsim = subprocess.Popen([self.config.modelsim_path+"vsim", "-c", "-wlfslim", "1", "work."+"MyProject"],
+	def __init__(self, modelsim_path, top_level_entity,target_path = "", time_resolution = "1ms"):
+		self.process = subprocess.Popen([modelsim_path+"vsim", "-t", time_resolution, "-c", "-wlfslim", "1","-Ldir", target_path+"work", "work."+top_level_entity],
 			stdin=subprocess.PIPE,
 			stdout=subprocess.PIPE,
 			stderr=subprocess.DEVNULL,
 			shell=True,
-			universal_newlines=True)
-	
-		self.proc_vsim.stdin.flush()
-		self.proc_vsim.stdout.flush()
+			universal_newlines=True)	
+		self.process.stdin.flush()
+		self.process.stdout.flush()
+		modelsim_read(self.process)
+		self.process.stdin.write("transcript file \"\"\n")	
+		self.process.stdin.flush()
+		modelsim_read(self.process)
 
-		modelsim_read(self.proc_vsim)
-
-		self.proc_vsim.stdin.write("transcript file \"\"\n")	
-		self.proc_vsim.stdin.flush()
-
-		modelsim_read(self.proc_vsim)
-
-	def force(self, port_name):
-		self.proc_vsim.stdin.write("force sim:/"+self.config.top_level_entity+"/"+port_name+" "+self.fpga.__dict__[port_name].value_str()+" \n")	
-		self.proc_vsim.stdin.flush()
-		return modelsim_read(self.proc_vsim)
+	def force(self, top_level_entity, port_name, port_value):
+		self.process.stdin.write("force sim:/"+top_level_entity+"/"+port_name+" "+port_value+" \n")	
+		self.process.stdin.flush()
+		return modelsim_read(self.process)
 
 	def examine(self, port_name):
-		self.proc_vsim.stdin.write("examine "+port_name+"  \n")	
-		self.proc_vsim.stdin.flush()
-		data = modelsim_read(self.proc_vsim)
-		if not any("Error" in dat for dat in data):
-			self.fpga.get(port_name).value_set(data[1])
-		return data
+		self.process.stdin.write("examine "+port_name+"  \n")	
+		self.process.stdin.flush()
+		return modelsim_read(self.process)
 	
 	def step(self):
-		self.proc_vsim.stdin.write("run 1 \n")	
-		self.proc_vsim.stdin.flush()
-		return modelsim_read(self.proc_vsim)
+		self.process.stdin.write("run 1 \n")	
+		self.process.stdin.flush()
+		return modelsim_read(self.process)
 	
 	def run(self, duration):
-		self.proc_vsim.stdin.write("run "+duration+ " \n")	
-		self.proc_vsim.stdin.flush()
-		return modelsim_read(self.proc_vsim)
+		self.process.stdin.write("run "+duration+ " \n")	
+		self.process.stdin.flush()
+		return modelsim_read(self.process)
 	
 	def restart(self):
-		self.proc_vsim.stdin.write("restart \n")	
-		self.proc_vsim.stdin.flush()
-		return modelsim_read(self.proc_vsim)
+		self.process.stdin.write("restart \n")	
+		self.process.stdin.flush()
+		return modelsim_read(self.process)
 
 	def quitsim(self):
-		self.proc_vsim.stdin.write("quit -sim \n")	
-		self.proc_vsim.stdin.flush()
-		return modelsim_read(self.proc_vsim)
+		self.process.stdin.write("quit -sim \n")	
+		self.process.stdin.flush()
+		return modelsim_read(self.process)
+
+
+class BoardSimulator():
+	def __init__(self, fpga,config):
+		self.fpga = fpga
+		self.config = config
+		self.vlib = VlibDriver(config.modelsim_path, target_path = config.lib_target_path )
+		self.vmap = VmapDriver(config.modelsim_path, target_path = config.lib_target_path )
+		self.vlog = VlogDriver(config.modelsim_path, target_path = config.lib_target_path )
+		self.vsim = VsimDriver(config.modelsim_path, config.lib_top_level_entity, target_path = config.lib_target_path)
+
 
 	def group_force(self):
-		for (name, port) in self.fpga.__dict__.items(): 
+		for (name, port) in self.fpga.get_all(): 
 			if port.direction == "input":
-				self.force(name)
+				self.vsim.force(self.config.lib_top_level_entity, port.name, port.get_value_lsb() )
+	
 
 	def group_examine(self):
-		for (name, port) in self.fpga.__dict__.items(): 
+		for (name, port) in self.fpga.get_all(): 
 			if port.direction == "output":
-				self.examine(name)
+				data = self.vsim.examine(port.name)
+				if ("Error" not in data):
+					numbers = [ block for block in data.split() if block.isdigit() ]
+					if (len(numbers) >= 1):
+						port.set_value_lsb(numbers[0])
 
-	class Simulator():
-		def __init__(self, fpga,config):
-			self.vlib = VlibDriver(config)
-			#self.vmap = VmapDriver
-			#self.vlog = VlogDriver
-			#self.vsim = VsimDriver
+
+	def step(self):
+		## Force Update the sim then step and examine
+		self.group_force()
+		self.vsim.step()
+		self.group_examine()
+
+	def run(self, duration):
+		## Force Update the sim then run and examine
+		self.group_force()
+		self.vsim.run(duration)
+		self.group_examine()
+
+

@@ -1,15 +1,16 @@
 class Port():
 	def __init__(self, value, size, direction, name):
+		# value = [b0 b1 b2 b3 ...]
 		self.value = [value]*size
 		self.direction = direction
 		self.size = size
 		self.name = name
 
-	def value_str(self):
+	def get_value_lsb(self):
 		return ''.join(map(lambda x: str(int(x)), self.value))
 
-	def value_set(self,data):
-		self.value = [True if  i=="1" else False for i in data[::-1]]
+	def set_value_lsb(self,data):
+		self.value = [True if  i=="1" else False for i in data]
 
 
 class Board():
@@ -25,5 +26,8 @@ class Board():
 		self.HEX5 = Port(True,7,"output","HEX5")
 		self.CLOCK_50 = Port(False,1,"input","CLOCK_50")
 
-	def get(self.port_name):
+	def get(self, port_name):
 		return self.__dict__[port_name]
+
+	def get_all(self):
+		return self.__dict__.items()

@@ -1,0 +1,13 @@
+# Byte-compiled / optimized / DLL files
+*/__pycache__/*
+*.py[cod]
+
+*/work/*
+*/*.ini
+*/transcript
+*/*.vstf
+src/__pycache__/modelsim.cpython-38.pyc
+src/__pycache__/fpga.cpython-38.pyc
+src/__pycache__/config.cpython-38.pyc
+*.pyc
+
