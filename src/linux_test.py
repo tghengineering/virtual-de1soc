@@ -4,6 +4,7 @@ import config
 import ascii_ui
 import os 
 import time 
+import pathlib
 
 board = fpga.Board()
 config = config.Config()

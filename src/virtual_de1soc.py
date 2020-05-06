@@ -5,6 +5,7 @@ import ascii_ui
 import os 
 import time 
 import keyboard
+import pathlib
 
 
 board = fpga.Board()
@@ -21,7 +22,7 @@ count = 0
 
 while(count < 10):
 	count += 1
-	
+
 	ascii_ui.render(board)
 
 	for x in range(len(SW_key)):
