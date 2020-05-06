@@ -5,6 +5,8 @@
 
 ## Dependencies 
 
+Modelsim
+
 Python 3.8.2
 
 Dependencies  
@@ -26,3 +28,6 @@ To get python the the class VM please follow these steps:
 `sudo yum install rh-python36`
 `scl enable rh-python35 bash`
 `python -V`
+
+
+![Virtual DE1 SoC](/images/screen.png)
