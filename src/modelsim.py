@@ -27,19 +27,19 @@ class VlibDriver():
 
 class VmapDriver():
 	def __init__(self, modelsim_path, target_path = "", lib_name = "work"):
-		self.process = subprocess.Popen([modelsim_path / "vmap.exe", "work ",target_path/lib_name],
+		self.process = subprocess.Popen([modelsim_path / "vmap", "work ",target_path/lib_name],
 			universal_newlines=True,
 			stdout=subprocess.PIPE)
 
 class VlogDriver():
 	def __init__(self, modelsim_path, target_path = "" ,verilog_files = "**.v", lib_name = "work"):
-		self.process = subprocess.Popen([modelsim_path / "vlog.exe","-work ",target_path/lib_name, verilog_files],
+		self.process = subprocess.Popen([modelsim_path / "vlog","-work ",target_path/lib_name, verilog_files],
 			universal_newlines=True,
 			stdout=subprocess.PIPE)
 
 class VsimDriver():
 	def __init__(self, modelsim_path, top_level_entity,target_path = "", time_resolution = "1ms"):
-		self.process = subprocess.Popen([modelsim_path / "vsim.exe", "-t", time_resolution, "-c", "-wlfslim", "1","-Ldir", target_path/"work", "work."+top_level_entity],
+		self.process = subprocess.Popen([modelsim_path / "vsim", "-t", time_resolution, "-c", "-wlfslim", "1","-Ldir", target_path/"work", "work."+top_level_entity],
 			stdin=subprocess.PIPE,
 			stdout=subprocess.PIPE,
 			shell=True,
