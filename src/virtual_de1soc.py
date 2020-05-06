@@ -21,7 +21,7 @@ count = 0
 
 while(count < 10):
 	count += 1
-
+	
 	ascii_ui.render(board)
 
 	for x in range(len(SW_key)):
@@ -35,7 +35,7 @@ while(count < 10):
 	board.CLOCK_50.value[0]=not(board.CLOCK_50.value[0])
 
 	sim.run("50ms")
-
+	
 	time_new = time.monotonic()
 	delay = time_delay - (time_new - time_old)
 	if (delay > 0):
