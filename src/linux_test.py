@@ -1,10 +1,10 @@
 import fpga
-import modelsim
+import pathlib
 import config
+import modelsim
 import ascii_ui
 import os 
 import time 
-import pathlib
 
 board = fpga.Board()
 config = config.Config()

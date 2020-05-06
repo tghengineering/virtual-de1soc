@@ -1,7 +1,8 @@
 import subprocess
 import fpga
-import config
 import pathlib
+import config
+
 
 def modelsim_write(proc,command):
 	proc.stdin.write(command)	
