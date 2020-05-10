@@ -6,4 +6,4 @@
 *.ini
 *transcript
 *.vstf
-*.pyc
+**/*.pyc
