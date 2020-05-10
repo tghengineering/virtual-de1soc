@@ -1,12 +1,13 @@
 # coding: utf-8
 import os
-import fpga
-
 	#return text_de1
+
+
 class BoardWriter():
+	def __init__(self):
+		self.screen_clear = 'cls' if (os.name == 'nt') else 'clear' 
 
-
-
+	 
 	def render(self,board):
 		shade1 = "░" 
 		shade2 = "░░" 
@@ -64,12 +65,7 @@ class BoardWriter():
 		text_de1[19] = text_de1[19].replace("KEY3",KEY[3]).replace("KEY2",KEY[2]).replace("KEY1",KEY[1]).replace("KEY0",KEY[0])
 		text_de1[20] = text_de1[20].replace("s9",s[9]).replace("s8",s[8]).replace("s7",s[7]).replace("s6",s[6]).replace("s5",s[5]).replace("s4",s[4]).replace("s3",s[3]).replace("s2",s[2]).replace("s1",s[1]).replace("s0",s[0]).replace("KEY3",KEY[3]).replace("KEY2",KEY[2]).replace("KEY1",KEY[1]).replace("KEY0",KEY[0])
 		
-		# for windows 
-		if os.name == 'nt': 
-			os.system('cls') 
-			# for mac and linux(here, os.name is 'posix') 
-		else: 
-			os.system('clear') 
+		os.system(self.screen_clear) 
 		
 		print()
 		for i in text_de1:
