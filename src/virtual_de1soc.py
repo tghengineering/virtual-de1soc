@@ -1,18 +1,23 @@
 import fpga
 import modelsim
-import config
+import config_manager
 import ascii_ui
 import os 
 import time 
 import keyboard
 import pathlib
 
-def run_simulation(config):
+def initialise(screenIO):
+	configurationManager = config_manager.ConfigManager()
+	configurationManager.load_config()
+	screenIO.renderConfigMenu(configurationManager)
+
+	return configurationManager.get_config()
+
+def run_simulation(screenIO, configuration):
 	board = fpga.Board()
 
-	screen = ascii_ui.BoardWriter()
-
-	sim = modelsim.BoardSimulator(board,config)
+	sim = modelsim.BoardSimulator(board, configuration)
 	#Seconds delay
 
 
@@ -23,14 +28,14 @@ def run_simulation(config):
 	while(count < 3):
 		count += 1
 
-		screen.render(board)
+		screenIO.renderBoard(board)
 
-		for x in range(len(config["SW_key"])):
-			if keyboard.is_pressed(str(config["SW_key"][x])):
+		for x in range(len(configuration["SW_key"])):
+			if keyboard.is_pressed(str(configuration["SW_key"][x])):
 				board.SW.value[x] = not(board.SW.value[x])
 
-		for x in range(len(config["KEY_key"])):
-			if keyboard.is_pressed(str(config["KEY_key"][x])):
+		for x in range(len(configuration["KEY_key"])):
+			if keyboard.is_pressed(str(configuration["KEY_key"][x])):
 				board.KEY.value[x] = not(board.KEY.value[x])
 		board.SW.value[0]=not(board.SW.value[0])
 		board.CLOCK_50.value[0]=not(board.CLOCK_50.value[0])
@@ -38,7 +43,7 @@ def run_simulation(config):
 		sim.run("50ms")
 		
 		time_new = time.monotonic()
-		delay = config["time_delay"] - (time_new - time_old)
+		delay = configuration["time_delay"] - (time_new - time_old)
 		if (delay > 0):
 			time.sleep(delay)
 		#print("Time ahead of the loop (seconds): "+str(delay))
@@ -46,8 +51,9 @@ def run_simulation(config):
 			print("System lagging by: "+str(-delay))
 		time_old = time_new
 
+screenIO = ascii_ui.ScreenIO()
 
-config = config.configuration
+configuration = initialise(screenIO)
 
-run_simulation(config)
+run_simulation(screenIO, configuration)
 
