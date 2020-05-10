@@ -3,9 +3,15 @@ import modelsim
 import config_manager
 import ascii_ui
 import os 
-import time 
-import keyboard
+import time
 import pathlib
+import msvcrt
+
+def keystroke_detected():
+	return msvcrt.kbhit()
+
+def get_key_stroke():
+	return str(msvcrt.getwch())
 
 def initialise(screenIO):
 	configurationManager = config_manager.ConfigManager()
@@ -25,18 +31,20 @@ def run_simulation(screenIO, configuration):
 	count = 0
 
 	#while(count < 3):
-	while(count < 3):
+	while(True):
 		count += 1
 
 		screenIO.renderBoard(board)
 
-		for x in range(len(configuration["SW_key"])):
-			if keyboard.is_pressed(str(configuration["SW_key"][x])):
-				board.SW.value[x] = not(board.SW.value[x])
+		while(keystroke_detected()):
+			value = get_key_stroke()
+			if value in configuration["SW_key"]:
+				sw_index = configuration["SW_key"].index(value)
+				board.SW.value[sw_index] = not(board.SW.value[sw_index])
+			if value in configuration["KEY_key"]:
+				key_index = configuration["KEY_key"].index(value)
+				board.KEY.value[key_index] = not(board.KEY.value[key_index])
 
-		for x in range(len(configuration["KEY_key"])):
-			if keyboard.is_pressed(str(configuration["KEY_key"][x])):
-				board.KEY.value[x] = not(board.KEY.value[x])
 		board.SW.value[0]=not(board.SW.value[0])
 		board.CLOCK_50.value[0]=not(board.CLOCK_50.value[0])
 
