@@ -75,5 +75,5 @@ def run_simulation(configuration):
 
 configuration = initialise()
 
-#run_simulation(configuration)
+run_simulation(configuration)
 
