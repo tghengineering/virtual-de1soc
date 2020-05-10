@@ -1,0 +1,1 @@
+{"vsim_step": "True", "visim_duration": "10ns", "lib_name": "work", "lib_top_level_entity": "MyProject", "time_delay": 0.2, "SW_key": ["0", "9", "8", "7", "6", "5", "4", "3", "2", "1"], "KEY_key": ["p", "o", "i", "u"], "lib_target_path": "C:\\Repos\\TomModelSim\\src", "modelsim_path": "C://intelFPGA_lite//18.1//modelsim_ase//win32aloem//"}

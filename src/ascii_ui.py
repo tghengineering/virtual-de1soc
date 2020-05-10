@@ -3,12 +3,48 @@ import os
 	#return text_de1
 
 
-class BoardWriter():
+class ScreenIO():
 	def __init__(self):
 		self.screen_clear = 'cls' if (os.name == 'nt') else 'clear' 
 
-	 
-	def render(self,board):
+	def renderConfigMenu(self, config, previousMessage = ""):
+		os.system(self.screen_clear) 
+		print(previousMessage)
+		print("Current configuration state is: ")
+		print(config)
+		print("Would you like to change any of these?")
+		print("0-8: Select Configuration to change | 9: Reset from File | 10: Save | 11: Continue | 12: Save and Continue | 13: Reset and Continue")
+		userInput = input("")
+
+		if userInput.isdigit():
+			userInput = int(userInput)
+		else:
+			self.renderConfigMenu(config, "Invalid input given: {0}.".format(userInput))
+
+		if userInput >= 0 and userInput <= 8:
+			newConfigValue = input("New Configuration Value for {0}: ".format(config.get_config_value(userInput)))
+			config.modify_config_value(userInput, newConfigValue)
+			self.renderConfigMenu(config, "Configuration changed.")
+		elif userInput == 9:
+			config.load_config()
+			self.renderConfigMenu(config, "Configuration reloaded from file.")
+		elif userInput == 10:
+			config.save_config()
+			self.renderConfigMenu(config, "Configuration saved to file.")
+		elif userInput == 11:
+			os.system(self.screen_clear) 
+		elif userInput == 12:
+			config.save_config()
+			os.system(self.screen_clear) 
+		elif userInput == 13:
+			config.load_config()
+			os.system(self.screen_clear) 
+		else:
+			self.renderConfigMenu(config, "Invalid input given: {0}.".format(userInput))
+		
+
+
+	def renderBoard(self,board):
 		shade1 = "░" 
 		shade2 = "░░" 
 		shade4 = "░░░░"
