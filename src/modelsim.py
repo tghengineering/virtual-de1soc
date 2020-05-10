@@ -52,12 +52,11 @@ class VsimDriver():
 			shell=True,
 			universal_newlines=True)	
 		self.process.stdin.flush()
-		self.process.stdout.flush()
 		(modelsim_read(self.process))
 		self.process.stdin.write("transcript file \"\"\n")	
 
 		self.process.stdin.flush()
-		(modelsim_read(self.process))
+		modelsim_read(self.process)
 
 	def force(self, top_level_entity, port_name, port_value):
 		self.process.stdin.write("force sim:/"+top_level_entity+"/"+port_name+" "+port_value+" \n")	
