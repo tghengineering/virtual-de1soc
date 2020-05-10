@@ -12,7 +12,7 @@ Python 3.8.2
 Dependencies  
 - keyboard
 `python -m pip install keyboard`
-
+https://pypi.org/project/keyboard/
 
 Future dependencies
 - ncurses
