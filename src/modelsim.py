@@ -94,16 +94,16 @@ class BoardSimulator():
 	def __init__(self, fpga,config):
 		self.fpga = fpga
 		self.config = config
-		self.vlib = VlibDriver(config.modelsim_path, target_path = config.lib_target_path )
-		self.vmap = VmapDriver(config.modelsim_path, target_path = config.lib_target_path )
-		self.vlog = VlogDriver(config.modelsim_path, target_path = config.lib_target_path )
-		self.vsim = VsimDriver(config.modelsim_path, config.lib_top_level_entity, target_path = config.lib_target_path)
+		self.vlib = VlibDriver(config["modelsim_path"], target_path = config["lib_target_path"] )
+		self.vmap = VmapDriver(config["modelsim_path"], target_path = config["lib_target_path"] )
+		self.vlog = VlogDriver(config["modelsim_path"], target_path = config["lib_target_path"] )
+		self.vsim = VsimDriver(config["modelsim_path"], config["lib_top_level_entity"], target_path = config["lib_target_path"])
 
 
 	def group_force(self):
 		for (name, port) in self.fpga.get_all(): 
 			if port.direction == "input":
-				self.vsim.force(self.config.lib_top_level_entity, port.name, port.get_value_lsb() )
+				self.vsim.force(self.config["lib_top_level_entity"], port.name, port.get_value_lsb() )
 	
 
 	def group_examine(self):
