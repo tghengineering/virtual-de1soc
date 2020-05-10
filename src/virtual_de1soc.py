@@ -12,7 +12,7 @@ config = config.Config()
 
 board = fpga.Board()
 
-screen = ascii_ui.BoardWriter(board)
+screen = ascii_ui.BoardWriter()
 
 sim = modelsim.BoardSimulator(board,config)
 #Seconds delay
@@ -25,7 +25,7 @@ count = 0
 while(count < 3):
 	count += 1
 
-	screen.render()
+	screen.render(board)
 
 	for x in range(len(config.SW_key)):
 		if keyboard.is_pressed(str(config.SW_key[x])):

@@ -2,13 +2,12 @@
 import os
 import fpga
 
-
 	#return text_de1
 class BoardWriter():
-	def __init__(self,fpga):
-		self.board = fpga
 
-	def render(self):
+
+
+	def render(self,board):
 		shade1 = "░" 
 		shade2 = "░░" 
 		shade4 = "░░░░"
@@ -16,16 +15,16 @@ class BoardWriter():
 		light2 = "██"
 		light4 = "████"
 		blank2 = "  "
-		H0  = [(shade1 if (i) else light1 ) for i in (self.board.HEX0.value)]
-		H1  = [(shade1 if (i) else light1 ) for i in (self.board.HEX1.value)]
-		H2  = [(shade1 if (i) else light1 ) for i in (self.board.HEX2.value)]
-		H3  = [(shade1 if (i) else light1 ) for i in (self.board.HEX3.value)]
-		H4  = [(shade1 if (i) else light1 ) for i in (self.board.HEX4.value)]
-		H5  = [(shade1 if (i) else light1 ) for i in (self.board.HEX5.value)]
-		KEY = [(light4 if (i) else shade4 ) for i in (self.board.KEY.value) ]
-		S   = [(light2 if (i) else blank2 ) for i in (self.board.SW.value)  ]
-		s   = [(blank2 if (i) else light2 ) for i in (self.board.SW.value)  ]
-		L   = [(light2 if (i) else shade2 ) for i in (self.board.LEDR.value)]
+		H0  = [(shade1 if (i) else light1 ) for i in (board.HEX0.value)]
+		H1  = [(shade1 if (i) else light1 ) for i in (board.HEX1.value)]
+		H2  = [(shade1 if (i) else light1 ) for i in (board.HEX2.value)]
+		H3  = [(shade1 if (i) else light1 ) for i in (board.HEX3.value)]
+		H4  = [(shade1 if (i) else light1 ) for i in (board.HEX4.value)]
+		H5  = [(shade1 if (i) else light1 ) for i in (board.HEX5.value)]
+		KEY = [(light4 if (i) else shade4 ) for i in (board.KEY.value) ]
+		S   = [(light2 if (i) else blank2 ) for i in (board.SW.value)  ]
+		s   = [(blank2 if (i) else light2 ) for i in (board.SW.value)  ]
+		L   = [(light2 if (i) else shade2 ) for i in (board.LEDR.value)]
 		text_de1 = [
 		"┌────────────────────────────────────────────────────────────────────────────────────────────────────┐",
 		"│   HEX5     HEX4        HEX3     HEX2        HEX1    HEX0                                           │",
