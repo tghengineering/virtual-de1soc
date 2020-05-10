@@ -71,4 +71,6 @@ def render(board):
 		print(i)
 
 	#return text_de1
-
+class AsciiUi():
+	def __init__(self,fpga):
+		self.a = ""
