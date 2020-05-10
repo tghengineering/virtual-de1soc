@@ -2,7 +2,7 @@ import subprocess
 import fpga
 import pathlib
 import config
-
+import os
 
 def modelsim_write(proc,command):
 	proc.stdin.write(command)	
@@ -19,7 +19,10 @@ def modelsim_read(proc):
 		dat_out=dat_out+dat
 	return dat_out
 
+def proc_kill(proc):
+	os.killpg(os.getpgid(proc.pid), signal.SIGTERM)
 
+# TODO RE ADD TARGET LOACTION
 class VlibDriver():
 	def __init__(self,modelsim_path, target_path = "", lib_name = "work"):
 #		self.process = subprocess.Popen([modelsim_path  / 'vlib',"-target ", lib_name],

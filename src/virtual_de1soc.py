@@ -8,8 +8,12 @@ import keyboard
 import pathlib
 
 
-board = fpga.Board()
 config = config.Config()
+
+board = fpga.Board()
+
+screen = ascii_ui.BoardWriter(board)
+
 sim = modelsim.BoardSimulator(board,config)
 #Seconds delay
 
@@ -17,10 +21,11 @@ sim = modelsim.BoardSimulator(board,config)
 time_old = time.monotonic() 
 count = 0
 
+#while(count < 3):
 while(count < 3):
 	count += 1
 
-	ascii_ui.render(board)
+	screen.render()
 
 	for x in range(len(config.SW_key)):
 		if keyboard.is_pressed(str(config.SW_key[x])):
@@ -38,5 +43,7 @@ while(count < 3):
 	delay = config.time_delay - (time_new - time_old)
 	if (delay > 0):
 		time.sleep(delay)
-	print("Time ahead of the loop (seconds): "+str(delay))
+	#print("Time ahead of the loop (seconds): "+str(delay))
+	if delay < 0:
+		print("System lagging by: "+str(-delay))
 	time_old = time_new
