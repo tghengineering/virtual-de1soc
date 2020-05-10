@@ -10,35 +10,37 @@ class ScreenIO():
 	def renderConfigMenu(self, config, previousMessage = ""):
 		os.system(self.screen_clear) 
 		print(previousMessage)
-		print("Current configuration state is: ")
-		print(config)
+		print("Welcome to configuration menu: ")
+		menuString = "a) Continue as it is\nb) Reset from File\nc) Save to Config File\nd) Save to Config file and Continue\ne) Reset from Config File and Continue\n"
+		print(menuString + str(config))
 		print("Would you like to change any of these?")
-		print("0-8: Select Configuration to change | 9: Reset from File | 10: Save | 11: Continue | 12: Save and Continue | 13: Reset and Continue")
-		userInput = input("")
+		print("a: Continue | b: Reset from File | c: Save | d: Save and Continue | e: Reset and Continue | 0-8: Select Configuration to change")
+		userInput = input("").lower()
 
-		if userInput.isdigit():
+		if userInput == "a" or userInput == "b" or userInput == "c" or userInput == "d" or userInput == "e":
+			pass 
+		elif userInput.isdigit():
 			userInput = int(userInput)
 		else:
 			self.renderConfigMenu(config, "Invalid input given: {0}.".format(userInput))
-
-		if userInput >= 0 and userInput <= 8:
+		if userInput == "b":
+			config.load_config()
+			self.renderConfigMenu(config, "Configuration reloaded from file.")
+		elif userInput == "c":
+			config.save_config()
+			self.renderConfigMenu(config, "Configuration saved to file.")
+		elif userInput == "a":
+			os.system(self.screen_clear) 
+		elif userInput == "d":
+			config.save_config()
+			os.system(self.screen_clear) 
+		elif userInput == "e":
+			config.load_config()
+			os.system(self.screen_clear)
+		elif userInput >= 0 and userInput <= 8:
 			newConfigValue = input("New Configuration Value for {0}: ".format(config.get_config_value(userInput)))
 			config.modify_config_value(userInput, newConfigValue)
 			self.renderConfigMenu(config, "Configuration changed.")
-		elif userInput == 9:
-			config.load_config()
-			self.renderConfigMenu(config, "Configuration reloaded from file.")
-		elif userInput == 10:
-			config.save_config()
-			self.renderConfigMenu(config, "Configuration saved to file.")
-		elif userInput == 11:
-			os.system(self.screen_clear) 
-		elif userInput == 12:
-			config.save_config()
-			os.system(self.screen_clear) 
-		elif userInput == 13:
-			config.load_config()
-			os.system(self.screen_clear) 
 		else:
 			self.renderConfigMenu(config, "Invalid input given: {0}.".format(userInput))
 		
