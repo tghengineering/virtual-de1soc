@@ -27,8 +27,9 @@ sudo yum update
 sudo yum install centos-release-scl
 sudo yum --disablerepo="*" --enablerepo="centos-sclo-rh" list *python3*
 sudo yum install rh-python36
-scl enable rh-python35 bash
+scl enable rh-python36 bash
 python -V
+sudo echo 'scl enable rh-python36 bash' >> ~/.bash_profile
 ```
 
 
