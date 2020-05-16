@@ -23,27 +23,27 @@ def proc_kill(proc):
 
 # TODO RE ADD TARGET LOACTION
 class VlibDriver():
-	def __init__(self,modelsim_path, target_path = "", lib_name = "work"):
+	def __init__(self,modelsim_path, target_path = pathlib.Path(""), lib_name = "work"):
 #		self.process = subprocess.Popen([modelsim_path  / 'vlib',"-target ", lib_name],
 		self.process = subprocess.Popen([modelsim_path  / 'vlib', lib_name],
 			universal_newlines=True,
 			stdout=subprocess.PIPE)
 
 class VmapDriver():
-	def __init__(self, modelsim_path, target_path = "", lib_name = "work"):
+	def __init__(self, modelsim_path, target_path = pathlib.Path(""), lib_name = "work"):
 		self.process = subprocess.Popen([modelsim_path / "vmap", "work ",lib_name],
 			universal_newlines=True,
 			stdout=subprocess.PIPE)
 
 class VlogDriver():
-	def __init__(self, modelsim_path, target_path = "" ,verilog_files = "**.v", lib_name = "work"):
+	def __init__(self, modelsim_path, target_path = pathlib.Path(""),verilog_files = "**.v", lib_name = "work"):
 #		self.process = subprocess.Popen([modelsim_path / "vlog","-work ",lib_name, verilog_files],
 		self.process = subprocess.Popen([modelsim_path / "vlog", verilog_files],
 			universal_newlines=True,
 			stdout=subprocess.PIPE)
 
 class VsimDriver():
-	def __init__(self, modelsim_path, top_level_entity,target_path = "", time_resolution = "1ms"):
+	def __init__(self, modelsim_path, top_level_entity,target_path = pathlib.Path(""), time_resolution = "1ms"):
 #		self.process = subprocess.Popen([modelsim_path / "vsim", "-t", time_resolution, "-c", "-wlfslim", "1","-Ldir", target_path / "work", "work."+top_level_entity],
 		self.process = subprocess.Popen([modelsim_path / "vsim", "-t", time_resolution, "-c", "-wlfslim", "1","work."+top_level_entity],
 			stdin=subprocess.PIPE,
@@ -85,16 +85,13 @@ class VsimDriver():
 	def quitsim(self):
 		self.process.stdin.write("quit -sim \n")	
 		self.process.stdin.flush()
-		return modelsim_read(self.process)
+		
 
 
-class BoardSimulator():
+class VsimController():
 	def __init__(self, fpga,config):
 		self.fpga = fpga
 		self.config = config
-		self.vlib = VlibDriver(config["modelsim_path"], target_path = config["target_path"] )
-		self.vmap = VmapDriver(config["modelsim_path"], target_path = config["target_path"] )
-		self.vlog = VlogDriver(config["modelsim_path"], target_path = config["target_path"] )
 		self.vsim = VsimDriver(config["modelsim_path"], config["lib_top_level_entity"], target_path = config["target_path"])
 
 
@@ -113,6 +110,8 @@ class BoardSimulator():
 					if (len(numbers) >= 1):
 						port.set_value_lsb(numbers[0])
 
+	def quitsim(self):
+		self.vsim.quitsim()
 
 	def step(self):
 		## Force Update the sim then step and examine

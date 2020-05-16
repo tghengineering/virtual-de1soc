@@ -7,22 +7,40 @@ class ScreenIO():
 	def __init__(self):
 		self.screen_clear = 'cls' if (os.name == 'nt') else 'clear' 
 
+
+	
+	def renderTop(self):
+		print("┌────────────────────────────────────────────────────────────────────────────────────────────────────┐\n",end="")
+
+	def renderLine(self,message):
+		pad1 = round( ( 100 - len(message) ) / 2 )
+		pad2 = 100 - pad1 - len(message)
+		print("│"+" "*pad1+message+" "*pad2+"│\n",end="")
+
+	def renderBottom(self):
+		print("└────────────────────────────────────────────────────────────────────────────────────────────────────┘\n",end="")
+
+	def renderEmpty(self):
+		print("│                                                                                                    │\n",end="")
+
+	def renderMessage(self,message):
+		self.renderTop()
+		self.renderEmpty()
+		self.renderLine(message)
+		self.renderEmpty()
+		self.renderBottom()
+
+
 	def renderConfigMenu(self, config, previousMessage = ""):
 		os.system(self.screen_clear) 
 		
-
-		print("┌────────────────────────────────────────────────────────────────────────────────────────────────────┐")
-		print("│                                                                                                    │")
-		print("│                        Welcome to the Virtual DE1SOC configuration menu view                       │")
-		print("│                                                                                                    │")
-		print("└────────────────────────────────────────────────────────────────────────────────────────────────────┘")
+		self.renderMessage("Welcome to the Virtual DE1SOC configuration menu view")
 
 
-		menuString = " a) Continue as it is\n b) Reset from File\n c) Save to Config File\n d) Save to Config file and Continue\n e) Reset from Config File and Continue\n"
+		menuString = " a) Continue with current setting (or enter)\n b) Reset settings from File\n c) Save to Config File\n d) Save to Config file and Continue\n e) Reset from Config File and Continue\n"
 		print(menuString + str(config))
 		print("Please select your option for the list above and then press enter...")
 		print(previousMessage+"\n")
-		# print("a: Continue | b: Reset from File | c: Save | d: Save and Continue | e: Reset and Continue | 0-8: Select Configuration to change")
 		userInput = input("").lower()
 
 		if userInput == "a" or userInput == "b" or userInput == "c" or userInput == "d" or userInput == "e" or userInput == "":
@@ -52,7 +70,8 @@ class ScreenIO():
 		else:
 			self.renderConfigMenu(config, "Invalid input given: {0}.".format(userInput))
 		
-
+	def clear(self):
+		os.system(self.screen_clear) 
 
 	def renderBoard(self,board,fps=0.0):
 		shade1 = "░" 
@@ -111,14 +130,12 @@ class ScreenIO():
 		text_de1[19] = text_de1[19].replace("KEY3",KEY[3]).replace("KEY2",KEY[2]).replace("KEY1",KEY[1]).replace("KEY0",KEY[0])
 		text_de1[20] = text_de1[20].replace("s9",s[9]).replace("s8",s[8]).replace("s7",s[7]).replace("s6",s[6]).replace("s5",s[5]).replace("s4",s[4]).replace("s3",s[3]).replace("s2",s[2]).replace("s1",s[1]).replace("s0",s[0]).replace("KEY3",KEY[3]).replace("KEY2",KEY[2]).replace("KEY1",KEY[1]).replace("KEY0",KEY[0])
 		
-		os.system(self.screen_clear) 
+		self.clear() 
 		
-		print("┌────────────────────────────────────────────────────────────────────────────────────────────────────┐")
-		print("│                                                                                                    │")
-		print("│                                       Virtual DE1SOC ascii view                                    │")
-		print("│                                                                                                    │")
-		print("└────────────────────────────────────────────────────────────────────────────────────────────────────┘",end="")
+		self.renderMessage("Virtual DE1SOC ascii view")
 
 		print()
 		for i in text_de1:
 			print(i+"\n",end="")
+
+

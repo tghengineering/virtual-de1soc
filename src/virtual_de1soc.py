@@ -20,18 +20,26 @@ def initialise(screenIO):
 
 	return configurationManager.get_config()
 
+def run_lib(screenIO, configuration):
+	vlib = modelsim.VlibDriver(configuration["modelsim_path"], target_path = configuration["target_path"] )
+	screenIO.clear()
+	screenIO.renderMessage("SUPPPPPPPPPPPPPPPPPP")
+	vmap = modelsim.VmapDriver(configuration["modelsim_path"], target_path = configuration["target_path"] )
+
+def run_compile(screenIO, configuration):
+	vlog = modelsim.VlogDriver(configuration["modelsim_path"], target_path = configuration["target_path"] )
+
 def run_simulation(screenIO, configuration):
 	board = fpga.Board()
 
-	sim = modelsim.BoardSimulator(board, configuration)
+	sim = modelsim.VsimController(board, configuration)
 	#Seconds delay
-
 
 	time_old = time.monotonic() 
 	count = 0
 	fps = 0 
-
-	while(True):
+	run = True
+	while(run):
 		count += 1
 
 		screenIO.renderBoard(board,fps)
@@ -50,11 +58,13 @@ def run_simulation(screenIO, configuration):
 			if value in configuration["KEY_key"]:
 				key_index = configuration["KEY_key"].index(value)
 				board.KEY.value[key_index] = not(board.KEY.value[key_index])
-
+			if value in configuration["quit_key"]:
+				run = False
 		board.CLOCK_50.value[0]=not(board.CLOCK_50.value[0])
 
-		# sim.step()
-		sim.run(str(round(time_dealy*1000))+"ms")
+
+		#sim.step()
+		sim.run(configuration["vsim_duration"])
 
 		# time_new = time.monotonic()
 		# delay = configuration["time_delay"] - (time_new - time_old)
@@ -64,10 +74,19 @@ def run_simulation(screenIO, configuration):
 		# if delay < 0:
 		# 	print("System lagging by: "+str(-delay))
 		# time_old = time_new
+	sim.quitsim()
+
+
+
+
 
 screenIO = ascii_ui.ScreenIO()
 
 configuration = initialise(screenIO)
+
+run_lib(screenIO, configuration)
+
+run_compile(screenIO, configuration)
 
 run_simulation(screenIO, configuration)
 
