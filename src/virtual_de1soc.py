@@ -29,14 +29,16 @@ def run_simulation(screenIO, configuration):
 
 	time_old = time.monotonic() 
 	count = 0
+	fps = 0 
 
-	#while(count < 3):
 	while(True):
 		count += 1
 
-		screenIO.renderBoard(board)
+		screenIO.renderBoard(board,fps)
 		time_new = time.monotonic()
-		print("FPS : "+"{:2.2f}".format(1/(time_new-time_old)))
+		time_dealy = time_new-time_old
+		fps = 1/(time_dealy)
+
 		time_old = time_new
 
 
@@ -51,8 +53,9 @@ def run_simulation(screenIO, configuration):
 
 		board.CLOCK_50.value[0]=not(board.CLOCK_50.value[0])
 
-		sim.step()
-		
+		# sim.step()
+		sim.run(str(round(time_dealy*1000))+"ms")
+
 		# time_new = time.monotonic()
 		# delay = configuration["time_delay"] - (time_new - time_old)
 		# if (delay > 0):
@@ -62,10 +65,8 @@ def run_simulation(screenIO, configuration):
 		# 	print("System lagging by: "+str(-delay))
 		# time_old = time_new
 
-
-
-
 screenIO = ascii_ui.ScreenIO()
+
 configuration = initialise(screenIO)
 
 run_simulation(screenIO, configuration)

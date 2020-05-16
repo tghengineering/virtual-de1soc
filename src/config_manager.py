@@ -7,7 +7,7 @@ class ConfigManager():
         with open('./config.json', 'r') as f:
             self.config = json.load(f)
             self.configIndex = [k  for  k in  self.config.keys()]
-            if "lib_target_path" not in self.config: self.config["lib_target_path"] = str(pathlib.Path.cwd())
+            if "target_path" not in self.config: self.config["target_path"] = str(pathlib.Path.cwd())
             if "modelsim_path" not in self.config: self.config["modelsim_path"] = "C://intelFPGA_lite//18.1//modelsim_ase//win32aloem//" if os.name == "nt" else "/home/ff/intelFPGA_lite//18.1//modelsim_ase//linuxaloem//"
     
     def save_config(self):
@@ -25,7 +25,8 @@ class ConfigManager():
         return self.config
 
     def __str__(self):
-        strConfig = ""
+        strConfig = "\n"
         for i, k in enumerate(self.config):
-            strConfig += "{0}) {1}: {2}\n".format(i, k, self.config[k])
+            strConfig += "{0:2.0f}) {1:_<24}: {2}\n".format(i, k, self.config[k])
+
         return strConfig

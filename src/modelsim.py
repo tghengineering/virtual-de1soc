@@ -92,10 +92,10 @@ class BoardSimulator():
 	def __init__(self, fpga,config):
 		self.fpga = fpga
 		self.config = config
-		self.vlib = VlibDriver(config["modelsim_path"], target_path = config["lib_target_path"] )
-		self.vmap = VmapDriver(config["modelsim_path"], target_path = config["lib_target_path"] )
-		self.vlog = VlogDriver(config["modelsim_path"], target_path = config["lib_target_path"] )
-		self.vsim = VsimDriver(config["modelsim_path"], config["lib_top_level_entity"], target_path = config["lib_target_path"])
+		self.vlib = VlibDriver(config["modelsim_path"], target_path = config["target_path"] )
+		self.vmap = VmapDriver(config["modelsim_path"], target_path = config["target_path"] )
+		self.vlog = VlogDriver(config["modelsim_path"], target_path = config["target_path"] )
+		self.vsim = VsimDriver(config["modelsim_path"], config["lib_top_level_entity"], target_path = config["target_path"])
 
 
 	def group_force(self):

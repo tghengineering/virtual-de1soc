@@ -9,15 +9,23 @@ class ScreenIO():
 
 	def renderConfigMenu(self, config, previousMessage = ""):
 		os.system(self.screen_clear) 
-		print(previousMessage)
-		print("Welcome to configuration menu: ")
-		menuString = "a) Continue as it is\nb) Reset from File\nc) Save to Config File\nd) Save to Config file and Continue\ne) Reset from Config File and Continue\n"
+		
+
+		print("┌────────────────────────────────────────────────────────────────────────────────────────────────────┐")
+		print("│                                                                                                    │")
+		print("│                        Welcome to the Virtual DE1SOC configuration menu view                       │")
+		print("│                                                                                                    │")
+		print("└────────────────────────────────────────────────────────────────────────────────────────────────────┘")
+
+
+		menuString = " a) Continue as it is\n b) Reset from File\n c) Save to Config File\n d) Save to Config file and Continue\n e) Reset from Config File and Continue\n"
 		print(menuString + str(config))
-		print("Would you like to change any of these?")
-		print("a: Continue | b: Reset from File | c: Save | d: Save and Continue | e: Reset and Continue | 0-8: Select Configuration to change")
+		print("Please select your option for the list above and then press enter...")
+		print(previousMessage+"\n")
+		# print("a: Continue | b: Reset from File | c: Save | d: Save and Continue | e: Reset and Continue | 0-8: Select Configuration to change")
 		userInput = input("").lower()
 
-		if userInput == "a" or userInput == "b" or userInput == "c" or userInput == "d" or userInput == "e":
+		if userInput == "a" or userInput == "b" or userInput == "c" or userInput == "d" or userInput == "e" or userInput == "":
 			pass 
 		elif userInput.isdigit():
 			userInput = int(userInput)
@@ -29,7 +37,7 @@ class ScreenIO():
 		elif userInput == "c":
 			config.save_config()
 			self.renderConfigMenu(config, "Configuration saved to file.")
-		elif userInput == "a":
+		elif userInput == "a" or userInput == "":
 			os.system(self.screen_clear) 
 		elif userInput == "d":
 			config.save_config()
@@ -46,7 +54,7 @@ class ScreenIO():
 		
 
 
-	def renderBoard(self,board):
+	def renderBoard(self,board,fps=0.0):
 		shade1 = "░" 
 		shade2 = "░░" 
 		shade4 = "░░░░"
@@ -66,7 +74,7 @@ class ScreenIO():
 		L   = [(light2 if (i) else shade2 ) for i in (board.LEDR.value)]
 		text_de1 = [
 		"┌────────────────────────────────────────────────────────────────────────────────────────────────────┐",
-		"│   HEX5     HEX4        HEX3     HEX2        HEX1    HEX0                                           │",
+		"│   HEX5     HEX4        HEX3     HEX2        HEX1    HEX0                                 FPS:"+"{:>6.2f}".format(fps)+"│",
 		"│┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐                                       │",
 		"││  aaaa  │  bbbb  │  │  cccc  │  dddd  │  │  eeee  │  ffff  │                                       │",
 		"││ a    b │ c    d │  │ e    f │ g    h │  │ i    j │ k    l │                                       │",
@@ -105,6 +113,12 @@ class ScreenIO():
 		
 		os.system(self.screen_clear) 
 		
+		print("┌────────────────────────────────────────────────────────────────────────────────────────────────────┐")
+		print("│                                                                                                    │")
+		print("│                                       Virtual DE1SOC ascii view                                    │")
+		print("│                                                                                                    │")
+		print("└────────────────────────────────────────────────────────────────────────────────────────────────────┘",end="")
+
 		print()
 		for i in text_de1:
-			print(i)
+			print(i+"\n",end="")
