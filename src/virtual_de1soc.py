@@ -17,22 +17,32 @@ def initialise(screenIO):
 	configurationManager = config_manager.ConfigManager()
 	configurationManager.load_config()
 	screenIO.renderConfigMenu(configurationManager)
-
-	return configurationManager.get_config()
-
+	configurationManager.get_modelsim_path()
+	configurationManager.get_target_path()
+	return configurationManager.config
+	
 def run_lib(screenIO, configuration):
 	vlib = modelsim.VlibDriver(configuration["modelsim_path"], target_path = configuration["target_path"] )
 	screenIO.clear()
-	screenIO.renderMessage("SUPPPPPPPPPPPPPPPPPP")
+	screenIO.renderMessage("Vlib finished")
 	vmap = modelsim.VmapDriver(configuration["modelsim_path"], target_path = configuration["target_path"] )
+	screenIO.renderMessage("Vmap finished")
 
 def run_compile(screenIO, configuration):
 	vlog = modelsim.VlogDriver(configuration["modelsim_path"], target_path = configuration["target_path"] )
+	screenIO.renderMessage("Vlog finished")
+
 
 def run_simulation(screenIO, configuration):
 	board = fpga.Board()
+	screenIO.clear()
+	screenIO.renderMessage("Vsim starting...")
 
 	sim = modelsim.VsimController(board, configuration)
+	screenIO.clear()
+	screenIO.renderMessage("Vsim running")
+	
+
 	#Seconds delay
 
 	time_old = time.monotonic() 
@@ -81,6 +91,8 @@ def run_simulation(screenIO, configuration):
 
 
 screenIO = ascii_ui.ScreenIO()
+
+screenIO.renderMessage("Config loading...")
 
 configuration = initialise(screenIO)
 

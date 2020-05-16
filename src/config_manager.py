@@ -20,8 +20,12 @@ class ConfigManager():
     def modify_config_value(self, index, value):
         self.config[self.configIndex[index]] = value
 
-    def get_config(self):
+    def get_modelsim_path(self):
         self.config["modelsim_path"] = pathlib.Path(self.config["modelsim_path"])
+        return self.config
+
+    def get_target_path(self):
+        self.config["target_path"] = pathlib.Path(self.config["target_path"])
         return self.config
 
     def __str__(self):
