@@ -1,17 +1,19 @@
+import time 
 class Port():
 	def __init__(self, value, size, direction, name):
 		# value = [b0 b1 b2 b3 ...]
 		self.value = [value]*size
 		self.direction = direction
 		self.size = size
+		self.default_value = value
 		self.name = name
 
 	def get_value_lsb(self):
-		return ''.join(map(lambda x: str(int(x)), self.value))
+		return ''.join(map(lambda x: str(int(x)), self.value[::-1]))
 
 	def set_value_lsb(self,data):
-		self.value = [True if  i=="1" else False for i in data]
-
+		for n in range(len(data)):
+			self.value[n] = True if (data[::-1][n] =="1") else  (False if (data[::-1][n] =="0")  else self.default_value)
 
 class Board():
 	def __init__(self):
