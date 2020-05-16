@@ -25,9 +25,9 @@ class ScreenIO():
 
 	def renderMessage(self,message):
 		self.renderTop()
-		self.renderEmpty()
+		# self.renderEmpty()
 		self.renderLine(message)
-		self.renderEmpty()
+		# self.renderEmpty()
 		self.renderBottom()
 
 
@@ -133,7 +133,7 @@ class ScreenIO():
 		
 		self.clear() 
 		
-		self.renderMessage("Virtual DE1SOC ascii view")
+		# self.renderMessage("Virtual DE1SOC ascii view")
 
 		for i in text_de1:
 			print(i+"\n",end="")
