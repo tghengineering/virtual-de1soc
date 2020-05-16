@@ -45,3 +45,4 @@ sudo echo 'scl enable rh-python36 bash' >> ~/.bash_profile
 [ ] Add the lib check
 [ ] Add the list modules option
 [ ] Add the main loop dealy 
+[ ] Add key record loop 

@@ -91,12 +91,13 @@ class ScreenIO():
 		S   = [(light2 if (i) else blank2 ) for i in (board.SW.value)  ]
 		s   = [(blank2 if (i) else light2 ) for i in (board.SW.value)  ]
 		L   = [(light2 if (i) else shade2 ) for i in (board.LEDR.value)]
+		CLK = [(light1 if ((board.CLOCK_50.value[0])) else shade1 )    ]
 		text_de1 = [
 		"┌────────────────────────────────────────────────────────────────────────────────────────────────────┐",
 		"│   HEX5     HEX4        HEX3     HEX2        HEX1    HEX0                                 FPS:"+"{:>6.2f}".format(fps)+"│",
-		"│┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐                                       │",
-		"││  aaaa  │  bbbb  │  │  cccc  │  dddd  │  │  eeee  │  ffff  │                                       │",
-		"││ a    b │ c    d │  │ e    f │ g    h │  │ i    j │ k    l │                                       │",
+		"│┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐                                   ┌──┐│",
+		"││  aaaa  │  bbbb  │  │  cccc  │  dddd  │  │  eeee  │  ffff  │                              CLK: │mm││",
+		"││ a    b │ c    d │  │ e    f │ g    h │  │ i    j │ k    l │                                   └──┘│",
 		"││ a    b │ c    d │  │ e    f │ g    h │  │ i    j │ k    l │                                       │",
 		"││  aaaa  │  bbbb  │  │  cccc  │  dddd  │  │  eeee  │  ffff  │                                       │",
 		"││ a    b │ c    d │  │ e    f │ g    h │  │ i    j │ k    l │                                       │",
@@ -118,7 +119,7 @@ class ScreenIO():
 		"│  SW9    SW8    SW7    SW6    SW5    SW4    SW3    SW2    SW1    SW0     KEY3   KEY2   KEY1   KEY0  │",
 		"└────────────────────────────────────────────────────────────────────────────────────────────────────┘"
 		]
-		text_de1[3]  = text_de1[3].replace("a",H5[0]).replace("b",H4[0]).replace("c",H3[0]).replace("d",H2[0]).replace("e",H1[0]).replace("f",H0[0])
+		text_de1[3]  = text_de1[3].replace("a",H5[0]).replace("b",H4[0]).replace("c",H3[0]).replace("d",H2[0]).replace("e",H1[0]).replace("f",H0[0]).replace("m",CLK[0])
 		text_de1[4]  = text_de1[4].replace("a",H5[5]).replace("b",H5[1]).replace("c",H4[5]).replace("d",H4[1]).replace("e",H3[5]).replace("f",H3[1]).replace("g",H2[5]).replace("h",H2[1]).replace("i",H1[5]).replace("j",H1[1]).replace("k",H0[5]).replace("l",H0[1])
 		text_de1[5]  = text_de1[5].replace("a",H5[5]).replace("b",H5[1]).replace("c",H4[5]).replace("d",H4[1]).replace("e",H3[5]).replace("f",H3[1]).replace("g",H2[5]).replace("h",H2[1]).replace("i",H1[5]).replace("j",H1[1]).replace("k",H0[5]).replace("l",H0[1])
 		text_de1[6]  = text_de1[6].replace("a",H5[6]).replace("b",H4[6]).replace("c",H3[6]).replace("d",H2[6]).replace("e",H1[6]).replace("f",H0[6])
@@ -134,7 +135,6 @@ class ScreenIO():
 		
 		self.renderMessage("Virtual DE1SOC ascii view")
 
-		print()
 		for i in text_de1:
 			print(i+"\n",end="")
 
