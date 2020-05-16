@@ -35,6 +35,10 @@ def run_simulation(screenIO, configuration):
 		count += 1
 
 		screenIO.renderBoard(board)
+		time_new = time.monotonic()
+		print("FPS : "+"{:2.2f}".format(1/(time_new-time_old)))
+		time_old = time_new
+
 
 		while(keystroke_detected()):
 			value = get_key_stroke()
@@ -45,22 +49,23 @@ def run_simulation(screenIO, configuration):
 				key_index = configuration["KEY_key"].index(value)
 				board.KEY.value[key_index] = not(board.KEY.value[key_index])
 
-		board.SW.value[0]=not(board.SW.value[0])
 		board.CLOCK_50.value[0]=not(board.CLOCK_50.value[0])
 
-		sim.run("50ms")
+		sim.step()
 		
-		time_new = time.monotonic()
-		delay = configuration["time_delay"] - (time_new - time_old)
-		if (delay > 0):
-			time.sleep(delay)
-		#print("Time ahead of the loop (seconds): "+str(delay))
-		if delay < 0:
-			print("System lagging by: "+str(-delay))
-		time_old = time_new
+		# time_new = time.monotonic()
+		# delay = configuration["time_delay"] - (time_new - time_old)
+		# if (delay > 0):
+		# 	time.sleep(delay)
+		# #print("Time ahead of the loop (seconds): "+str(delay))
+		# if delay < 0:
+		# 	print("System lagging by: "+str(-delay))
+		# time_old = time_new
+
+
+
 
 screenIO = ascii_ui.ScreenIO()
-
 configuration = initialise(screenIO)
 
 run_simulation(screenIO, configuration)
