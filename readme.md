@@ -34,3 +34,14 @@ sudo echo 'scl enable rh-python36 bash' >> ~/.bash_profile
 
 
 ![Virtual DE1 SoC](/images/screen.png)
+
+## Todo
+
+[ ] Fix the vsim fatal error on close
+[ ] Fix the linux modelsim issue
+[ ] Add the linux make file for ELEN30010 virtual box
+[ ] Add the linux setup sh file for ELEN30010 virtual box
+[ ] Add the target path 
+[ ] Add the lib check
+[ ] Add the list modules option
+[ ] Add the main loop dealy 
