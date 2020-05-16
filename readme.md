@@ -20,9 +20,11 @@ Future dependencies
 
 ## Notes
 
+On linux systems keyboard requires root access.
 To get python the the class VM please follow these steps:
 
 ```
+sudo su
 sudo yum update
 sudo yum install centos-release-scl
 sudo yum --disablerepo="*" --enablerepo="centos-sclo-rh" list *python3*
@@ -38,11 +40,19 @@ sudo echo 'scl enable rh-python36 bash' >> ~/.bash_profile
 ## Todo
 
 [ ] Fix the vsim fatal error on close
-[ ] Fix the linux modelsim issue
+
+[x] Fix the linux modelsim issue
+
 [ ] Add the linux make file for ELEN30010 virtual box
+
 [ ] Add the linux setup sh file for ELEN30010 virtual box
-[ ] Add the target path 
+
+[x] Add the target path 
+
 [ ] Add the lib check
+
 [ ] Add the list modules option
-[ ] Add the main loop dealy 
-[ ] Add key record loop 
+
+[x] Add the main loop dealy 
+
+[x] Add key record loop 
