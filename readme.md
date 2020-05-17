@@ -58,3 +58,5 @@ sudo echo 'scl enable rh-python36 bash' >> ~/.bash_profile
 [x] Add the main loop dealy 
 
 [x] Add key record loop 
+
+[ ] Add auto updating config input length
