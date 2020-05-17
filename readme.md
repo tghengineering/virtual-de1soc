@@ -14,9 +14,7 @@ Dependencies
 `python -m pip install keyboard`
 https://pypi.org/project/keyboard/
 
-Future dependencies
-- ncurses
-`python -m pip install windows-curses`
+
 
 ## Notes
 
