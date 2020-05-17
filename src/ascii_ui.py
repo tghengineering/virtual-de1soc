@@ -8,10 +8,10 @@ class ScreenIO():
 	def __init__(self):
 		self.screen_clear = 'cls' if (os.name == 'nt') else 'clear' 
 
-
 	
 	def renderTop(self):
 		print("┌────────────────────────────────────────────────────────────────────────────────────────────────────┐\n",end="")
+
 
 	def renderLine(self,message):
 		message = message.split("\n")
@@ -20,17 +20,19 @@ class ScreenIO():
 				pad1 = math.floor( ( 100 - len(text.strip()) ) / 2 )
 				pad2 = 100 - pad1 - len(text.strip())
 				print("│"+" "*pad1+text.strip()+" "*pad2+"│\n",end="")
-
 		else:
 			pad1 = math.floor( ( 100 - len(message.strip()) ) / 2 )
 			pad2 = 100 - pad1 - len(message.strip())
 			print("│"+" "*pad1+message.strip()+" "*pad2+"│\n",end="")
 
+
 	def renderBottom(self):
 		print("└────────────────────────────────────────────────────────────────────────────────────────────────────┘\n",end="")
 
+
 	def renderEmpty(self):
 		print("│                                                                                                    │\n",end="")
+
 
 	def renderMessage(self,message):
 		self.renderTop()
@@ -44,7 +46,6 @@ class ScreenIO():
 		os.system(self.screen_clear) 
 		
 		self.renderMessage("Welcome to the Virtual DE1SOC configuration menu view")
-
 
 		menuString = " a) Continue with current setting (or enter)\n b) Reset settings from File\n c) Save to Config File\n d) Save to Config file and Continue\n e) Reset from Config File and Continue\n"
 		print(menuString + str(config))
@@ -72,15 +73,17 @@ class ScreenIO():
 		elif userInput == "e":
 			config.load_config()
 			os.system(self.screen_clear)
-		elif userInput >= 0 and userInput <= 8:
+		elif userInput >= 0 and userInput <= 12:
 			newConfigValue = input("New Configuration Value for {0}: ".format(config.get_config_value(userInput)))
 			config.modify_config_value(userInput, newConfigValue)
 			self.renderConfigMenu(config, "Configuration changed.")
 		else:
 			self.renderConfigMenu(config, "Invalid input given: {0}.".format(userInput))
-		
+
+
 	def clear(self):
 		os.system(self.screen_clear) 
+
 
 	def renderBoard(self,board,fps=0.0):
 		shade1 = "░" 
@@ -141,9 +144,7 @@ class ScreenIO():
 		text_de1[20] = text_de1[20].replace("s9",s[9]).replace("s8",s[8]).replace("s7",s[7]).replace("s6",s[6]).replace("s5",s[5]).replace("s4",s[4]).replace("s3",s[3]).replace("s2",s[2]).replace("s1",s[1]).replace("s0",s[0]).replace("KEY3",KEY[3]).replace("KEY2",KEY[2]).replace("KEY1",KEY[1]).replace("KEY0",KEY[0])
 		
 		self.clear() 
-		
 		# self.renderMessage("Virtual DE1SOC ascii view")
-
 		for i in text_de1:
 			print(i+"\n",end="")
 

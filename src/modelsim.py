@@ -19,10 +19,7 @@ def modelsim_read(proc):
 		dat_out=dat_out+dat
 	return dat_out
 
-def proc_kill(proc):
-	os.killpg(os.getpgid(proc.pid), signal.SIGTERM)
 
-# TODO RE ADD TARGET LOACTION
 class VlibDriver():
 	def __init__(self,modelsim_path, target_path = pathlib.Path.cwd(), lib_name = "work"):
 		self.process = subprocess.Popen([modelsim_path  / 'vlib',"-target" , target_path / lib_name],
@@ -39,9 +36,9 @@ class VmapDriver():
 			stdout=subprocess.PIPE)
 		self.outs, self.errs = self.process.communicate()
 
+
 class VlogDriver():
 	def __init__(self, modelsim_path, target_path = pathlib.Path.cwd(),verilog_files = "**.v", lib_name = "work"):
-#		self.process = subprocess.Popen([modelsim_path / "vlog","-work ",lib_name, verilog_files],
 		self.process = subprocess.Popen([modelsim_path / "vlog","-nocreatelib","-work",target_path/lib_name ,target_path/verilog_files],
 			universal_newlines=True,
 			stdout=subprocess.PIPE)
@@ -50,7 +47,6 @@ class VlogDriver():
 
 class VsimDriver():
 	def __init__(self, modelsim_path, top_level_entity,target_path = pathlib.Path.cwd(), time_resolution = "1ms"):
-#		self.process = subprocess.Popen([modelsim_path / "vsim", "-t", time_resolution, "-c", "-wlfslim", "1","-Ldir", target_path / "work", "work."+top_level_entity],
 		self.process = subprocess.Popen([modelsim_path / "vsim", "-t", time_resolution, "-c", "-wlfslim", "1","-Ldir", target_path / "work", "work."+top_level_entity],
 			stdin=subprocess.PIPE,
 			stdout=subprocess.PIPE,
@@ -59,41 +55,45 @@ class VsimDriver():
 		self.process.stdin.flush()
 		print(modelsim_read(self.process))
 		self.process.stdin.write("transcript file \"\"\n")	
-
 		self.process.stdin.flush()
 		modelsim_read(self.process)
+
 
 	def force(self, top_level_entity, port_name, port_value):
 		self.process.stdin.write("force sim:/"+top_level_entity+"/"+port_name+" "+port_value+" \n")	
 		self.process.stdin.flush()
 		return modelsim_read(self.process)
 
+
 	def examine(self, port_name):
 		self.process.stdin.write("examine "+port_name+"  \n")	
 		self.process.stdin.flush()
 		return modelsim_read(self.process)
 	
+
 	def step(self):
 		self.process.stdin.write("run 1 \n")	
 		self.process.stdin.flush()
 		return modelsim_read(self.process)
 	
+
 	def run(self, duration):
 		self.process.stdin.write("run "+duration+ " \n")	
 		self.process.stdin.flush()
 		return modelsim_read(self.process)
 	
+
 	def restart(self):
 		self.process.stdin.write("restart \n")	
 		self.process.stdin.flush()
 		return modelsim_read(self.process)
+
 
 	def quitsim(self):
 		# self.process.stdin.write("quit -sim \n")
 		self.process.stdin.write("exit \n")	
 		self.process.stdin.flush()
 		
-
 
 class VsimController():
 	def __init__(self, fpga,config):
@@ -116,6 +116,7 @@ class VsimController():
 					blocks = data.split()
 					port.set_value_lsb(blocks[3])
 
+
 	def quitsim(self):
 		self.vsim.quitsim()
 
@@ -125,6 +126,7 @@ class VsimController():
 		self.group_force()
 		self.vsim.step()
 		self.group_examine()
+
 
 	def run(self, duration):
 		## Force Update the sim then run and examine

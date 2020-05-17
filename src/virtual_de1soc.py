@@ -5,15 +5,9 @@ import ascii_ui
 import os 
 import time
 import pathlib
-# import msvcrt
 import keyboard
 
-# def keystroke_detected():
-# 	return msvcrt.kbhit()
-
 def get_key_stroke():
-	# return str(msvcrt.getwch())
-	#  keyboard.is_pressed
 	keyevents = keyboard.stop_recording()
 	keyboard.start_recording()
 	keylist = []
@@ -22,7 +16,6 @@ def get_key_stroke():
 			if event.name not in keylist:
 				keylist.append(event.name.lower())
 	return keylist
-
 
 def initialise(screenIO):
 	configurationManager = config_manager.ConfigManager()
@@ -43,8 +36,6 @@ def run_compile(screenIO, configuration):
 	screenIO.renderMessage("Vlog finished")
 	screenIO.renderMessage(vlog.outs)
 	time.sleep(10)
-# def key_update(board, configuration):
-
 
 def run_simulation(screenIO, configuration):
 	board = fpga.Board()
@@ -62,8 +53,10 @@ def run_simulation(screenIO, configuration):
 	count = 0
 	fps = 0 
 	run = True
+	pause_loop = False
+
 	while(run):
-		count += 1
+		
 		pause_loop =  configuration["step_state"] 
 	
 		if( configuration["step_state"]   ):
@@ -121,8 +114,6 @@ def run_simulation(screenIO, configuration):
 
 			board.CLOCK_50.value[0]=not(board.CLOCK_50.value[0])
 
-
-
 		#sim.step()
 		sim.run(configuration["vsim_duration"])
 
@@ -145,18 +136,9 @@ def run_simulation(screenIO, configuration):
 		fps = 1/(time_dealy)
 
 		time_old = time_new
-		# time_new = time.monotonic()
-		# delay = configuration["time_delay"] - (time_new - time_old)
-		# if (delay > 0):
-		# 	time.sleep(delay)
-		# #print("Time ahead of the loop (seconds): "+str(delay))
-		# if delay < 0:
-		# 	print("System lagging by: "+str(-delay))
-		# time_old = time_new
+		count += 1
+
 	sim.quitsim()
-
-
-
 
 
 screenIO = ascii_ui.ScreenIO()
@@ -170,4 +152,3 @@ run_lib(screenIO, configuration)
 run_compile(screenIO, configuration)
 
 run_simulation(screenIO, configuration)
-
