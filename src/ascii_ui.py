@@ -1,5 +1,6 @@
 # coding: utf-8
 import os
+import math
 	#return text_de1
 
 
@@ -13,9 +14,17 @@ class ScreenIO():
 		print("┌────────────────────────────────────────────────────────────────────────────────────────────────────┐\n",end="")
 
 	def renderLine(self,message):
-		pad1 = round( ( 100 - len(message) ) / 2 )
-		pad2 = 100 - pad1 - len(message)
-		print("│"+" "*pad1+message+" "*pad2+"│\n",end="")
+		message = message.split("\n")
+		if isinstance(message,list):
+			for text in message:
+				pad1 = math.floor( ( 100 - len(text.strip()) ) / 2 )
+				pad2 = 100 - pad1 - len(text.strip())
+				print("│"+" "*pad1+text.strip()+" "*pad2+"│\n",end="")
+
+		else:
+			pad1 = math.floor( ( 100 - len(message.strip()) ) / 2 )
+			pad2 = 100 - pad1 - len(message.strip())
+			print("│"+" "*pad1+message.strip()+" "*pad2+"│\n",end="")
 
 	def renderBottom(self):
 		print("└────────────────────────────────────────────────────────────────────────────────────────────────────┘\n",end="")

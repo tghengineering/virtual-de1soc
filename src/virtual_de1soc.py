@@ -32,16 +32,17 @@ def initialise(screenIO):
 	return configurationManager.config
 
 def run_lib(screenIO, configuration):
-	vlib = modelsim.VlibDriver(configuration["modelsim_path"], target_path = configuration["target_path"] )
+	modelsim.VlibDriver(configuration["modelsim_path"], target_path = configuration["target_path"] )
 	screenIO.clear()
 	screenIO.renderMessage("Vlib finished")
-	vmap = modelsim.VmapDriver(configuration["modelsim_path"], target_path = configuration["target_path"] )
+	modelsim.VmapDriver(configuration["modelsim_path"], target_path = configuration["target_path"] )
 	screenIO.renderMessage("Vmap finished")
 
 def run_compile(screenIO, configuration):
 	vlog = modelsim.VlogDriver(configuration["modelsim_path"], target_path = configuration["target_path"] )
 	screenIO.renderMessage("Vlog finished")
-
+	screenIO.renderMessage(vlog.outs)
+	time.sleep(10)
 # def key_update(board, configuration):
 
 

@@ -28,12 +28,16 @@ class VlibDriver():
 		self.process = subprocess.Popen([modelsim_path  / 'vlib',"-target" , target_path / lib_name],
 			universal_newlines=True,
 			stdout=subprocess.PIPE)
+		self.outs, self.errs = self.process.communicate()
+		return
+
 
 class VmapDriver():
 	def __init__(self, modelsim_path, target_path = pathlib.Path.cwd(), lib_name = "work"):
 		self.process = subprocess.Popen([modelsim_path / "vmap", lib_name,target_path/lib_name],
 			universal_newlines=True,
 			stdout=subprocess.PIPE)
+		self.outs, self.errs = self.process.communicate()
 
 class VlogDriver():
 	def __init__(self, modelsim_path, target_path = pathlib.Path.cwd(),verilog_files = "**.v", lib_name = "work"):
@@ -41,6 +45,7 @@ class VlogDriver():
 		self.process = subprocess.Popen([modelsim_path / "vlog","-nocreatelib","-work",target_path/lib_name ,target_path/verilog_files],
 			universal_newlines=True,
 			stdout=subprocess.PIPE)
+		self.outs, self.errs = self.process.communicate()
 
 
 class VsimDriver():
