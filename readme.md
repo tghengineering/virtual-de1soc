@@ -14,9 +14,7 @@ Dependencies
 `python -m pip install keyboard`
 https://pypi.org/project/keyboard/
 
-Future dependencies
-- ncurses
-`python -m pip install windows-curses`
+
 
 ## Notes
 
@@ -53,7 +51,7 @@ sudo echo 'scl enable rh-python36 bash' >> ~/.bash_profile
 
 [ ] Add the list modules option
 
-[ ] Add vlog result page display
+[x] Add vlog result page display
 
 [x] Add the main loop dealy 
 
