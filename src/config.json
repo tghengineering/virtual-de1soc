@@ -1,1 +1,12 @@
-{"vsim_duration": "10ms", "lib_name": "work", "lib_top_level_entity": "MyProject", "frame_time": 0.2, "SW_key": ["0", "9", "8", "7", "6", "5", "4", "3", "2", "1"], "KEY_key": ["p", "o", "i", "u"],"CLK_key":"c" ,"quit_key": "q", "step_key": "s","forward_key": "f", "step_state": "False"}
+{
+	"vsim_duration": "10ms",
+	"lib_name": "work",
+	"lib_top_level_entity": "MyProject",
+	"frame_time": 0.2,
+	"SW_key": ["0", "9", "8", "7", "6", "5", "4", "3", "2", "1"],
+	"KEY_key": ["p", "o", "i", "u"],
+	"CLK_key":"c" ,"quit_key": "q",
+	"step_key": "s",
+	"forward_key": "f",
+	"step_state": "False"
+}

@@ -27,6 +27,7 @@ class ConfigManager():
 	def set_types(self):
 		self.config["modelsim_path"] = pathlib.Path(self.config["modelsim_path"])
 		self.config["target_path"] = pathlib.Path(self.config["target_path"])
+		self.config["frame_time"] = float(self.config["frame_time"])
 		self.config["step_state"] = True if self.config["step_state"]=="True" else False
 
 
