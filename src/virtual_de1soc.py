@@ -94,6 +94,7 @@ def run_simulation(screenIO, configuration):
 				fps = 1/(time_dealy)
 
 				time_old = time_new
+			sim.step()
 
 		else:
 			keyevents = get_key_stroke()
@@ -113,9 +114,9 @@ def run_simulation(screenIO, configuration):
 						configuration["step_state"] = not(configuration["step_state"])
 
 			board.CLOCK_50.value[0]=not(board.CLOCK_50.value[0])
+			sim.run(configuration["vsim_duration"])
 
-		#sim.step()
-		sim.run(configuration["vsim_duration"])
+		
 
 		screenIO.renderBoard(board,fps)
 		if configuration["step_state"]:
