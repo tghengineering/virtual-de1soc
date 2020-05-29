@@ -7,37 +7,43 @@ import math
 class ScreenIO():
 	def __init__(self):
 		self.screen_clear = 'cls' if (os.name == 'nt') else 'clear' 
+		self.width_boarder = 1
+		self.width_main = 100
+		self.width_total = 2*self.width_boarder+self.width_main
 
 	
 	def renderTop(self):
-		print("┌────────────────────────────────────────────────────────────────────────────────────────────────────┐\n",end="")
+		print("┌"+"─"*self.width_main+"┐\n",end="")
 
 
-	def renderLine(self,message):
+	def renderText(self,message):
+		
+		for text in [message[i:i+self.width_main] for i in range(0,len(message),self.width_main)]:
+			pad1 = math.floor( ( 100 - len(text.strip()) ) / 2 )
+			pad2 = 100 - pad1 - len(text.strip())
+			print("│"+" "*pad1+text.strip()+" "*pad2+"│\n",end="")
+
+
+	def renderLines(self,message):
 		message = message.split("\n")
 		if isinstance(message,list):
 			for text in message:
-				pad1 = math.floor( ( 100 - len(text.strip()) ) / 2 )
-				pad2 = 100 - pad1 - len(text.strip())
-				print("│"+" "*pad1+text.strip()+" "*pad2+"│\n",end="")
+				self.renderText(text)
 		else:
-			pad1 = math.floor( ( 100 - len(message.strip()) ) / 2 )
-			pad2 = 100 - pad1 - len(message.strip())
-			print("│"+" "*pad1+message.strip()+" "*pad2+"│\n",end="")
-
+			self.renderText(message)
 
 	def renderBottom(self):
-		print("└────────────────────────────────────────────────────────────────────────────────────────────────────┘\n",end="")
+		print("└"+"─"*self.width_main+"┘\n",end="")
 
 
 	def renderEmpty(self):
-		print("│                                                                                                    │\n",end="")
+		print("│"+" "*self.width_main+"│\n",end="")
 
 
 	def renderMessage(self,message):
 		self.renderTop()
 		# self.renderEmpty()
-		self.renderLine(message)
+		self.renderLines(message)
 		# self.renderEmpty()
 		self.renderBottom()
 
@@ -106,7 +112,7 @@ class ScreenIO():
 		CLK = [(light1 if ((board.CLOCK_50.value[0])) else shade1 )    ]
 		text_de1 = [
 		"┌────────────────────────────────────────────────────────────────────────────────────────────────────┐",
-		"│   HEX5     HEX4        HEX3     HEX2        HEX1    HEX0                                 FPS:"+"{:>6.2f}".format(fps)+"│",
+		"│   HEX5     HEX4        HEX3     HEX2        HEX1    HEX0                                 FPS:QQQQQQ│",
 		"│┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐                                   ┌──┐│",
 		"││  aaaa  │  bbbb  │  │  cccc  │  dddd  │  │  eeee  │  ffff  │                              CLK: │mm││",
 		"││ a    b │ c    d │  │ e    f │ g    h │  │ i    j │ k    l │                                   └──┘│",
@@ -131,6 +137,7 @@ class ScreenIO():
 		"│  SW9    SW8    SW7    SW6    SW5    SW4    SW3    SW2    SW1    SW0     KEY3   KEY2   KEY1   KEY0  │",
 		"└────────────────────────────────────────────────────────────────────────────────────────────────────┘"
 		]
+		text_de1[1]  = text_de1[1].replace("QQQQQQ","{:>6.2f}".format(fps))
 		text_de1[3]  = text_de1[3].replace("a",H5[0]).replace("b",H4[0]).replace("c",H3[0]).replace("d",H2[0]).replace("e",H1[0]).replace("f",H0[0]).replace("m",CLK[0])
 		text_de1[4]  = text_de1[4].replace("a",H5[5]).replace("b",H5[1]).replace("c",H4[5]).replace("d",H4[1]).replace("e",H3[5]).replace("f",H3[1]).replace("g",H2[5]).replace("h",H2[1]).replace("i",H1[5]).replace("j",H1[1]).replace("k",H0[5]).replace("l",H0[1])
 		text_de1[5]  = text_de1[5].replace("a",H5[5]).replace("b",H5[1]).replace("c",H4[5]).replace("d",H4[1]).replace("e",H3[5]).replace("f",H3[1]).replace("g",H2[5]).replace("h",H2[1]).replace("i",H1[5]).replace("j",H1[1]).replace("k",H0[5]).replace("l",H0[1])
