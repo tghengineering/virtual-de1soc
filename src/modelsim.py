@@ -39,7 +39,7 @@ class VmapDriver():
 
 class VlogDriver():
 	def __init__(self, modelsim_path, target_path = pathlib.Path.cwd(),verilog_files = "**.v", lib_name = "work"):
-		self.process = subprocess.Popen([modelsim_path / "vlog","-nocreatelib","-work",target_path/lib_name ,target_path/verilog_files],
+		self.process = subprocess.Popen([modelsim_path / "vlog","-nocreatelib","+incdir+"+str(target_path),"-work",target_path/lib_name ,target_path/verilog_files],
 			universal_newlines=True,
 			stdout=subprocess.PIPE)
 		self.outs, self.errs = self.process.communicate()
