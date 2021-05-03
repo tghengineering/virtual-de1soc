@@ -35,6 +35,11 @@ sudo echo 'scl enable rh-python36 bash' >> ~/.bash_profile
 
 ![Virtual DE1 SoC](/images/screen.png)
 
+
+If the display is flickering decrease the screen buffer size
+![Virtual DE1 SoC](/images/buffer.png)
+
+
 ## Todo
 
 [ ] Fix the vsim fatal error on close
