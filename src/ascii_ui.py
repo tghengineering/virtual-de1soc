@@ -10,8 +10,13 @@ class ScreenIO():
 		self.width_boarder = 1
 		self.width_main = 100
 		self.width_total = 2*self.width_boarder+self.width_main
+		if os.name == "nt":
+			os.system("mode con:cols=104 lines=50")
 
-	
+	def color(self,color):
+		if os.name == "nt":
+			os.system("color "+color)
+
 	def renderTop(self):
 		print("┌"+"─"*self.width_main+"┐\n",end="")
 
@@ -50,7 +55,7 @@ class ScreenIO():
 
 	def renderConfigMenu(self, config, previousMessage = ""):
 		os.system(self.screen_clear) 
-		
+		self.color(config.config["text_color"])
 		self.renderMessage("Welcome to the Virtual DE1SOC configuration menu view")
 
 		menuString = " a) Continue with current setting (or enter)\n b) Reset settings from File\n c) Save to Config File\n d) Save to Config file and Continue\n e) Reset from Config File and Continue\n"
