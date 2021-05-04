@@ -84,7 +84,7 @@ class ScreenIO():
 		elif userInput == "e":
 			config.load_config()
 			os.system(self.screen_clear)
-		elif userInput >= 0 and userInput <= 12:
+		elif userInput >= 0 and userInput < len(config.config.items()):
 			newConfigValue = input("New Configuration Value for {0}: ".format(config.get_config_value(userInput)))
 			config.modify_config_value(userInput, newConfigValue)
 			self.renderConfigMenu(config, "Configuration changed.")
