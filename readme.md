@@ -36,7 +36,7 @@ sudo echo 'scl enable rh-python36 bash' >> ~/.bash_profile
 ![Virtual DE1 SoC](/images/screen.png)
 
 
-If the display is flickering decrease the screen buffer size
+If the display is flickering decrease the screen buffer size. This should automically update now.
 ![Virtual DE1 SoC](/images/buffer.png)
 
 
